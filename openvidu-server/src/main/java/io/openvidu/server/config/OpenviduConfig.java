@@ -181,6 +181,13 @@ public class OpenviduConfig {
 	protected int openviduSessionsGarbageThreshold;
 
 	private String dotenvPath;
+	
+	// MQTT
+	
+	private  boolean eventMQTTlog;
+	private String eventMQTTstartTopic;
+	private Integer eventMQTTqos;
+	private String eventMQTTbroker;
 
 	// Derived properties
 
@@ -511,7 +518,12 @@ public class OpenviduConfig {
 		openviduSessionsGarbageThreshold = asNonNegativeInteger("OPENVIDU_SESSIONS_GARBAGE_THRESHOLD");
 
 		kmsUrisList = checkKmsUris();
-
+		
+		eventMQTTlog = asBoolean("EVENT_MQTT_LOG");
+		eventMQTTstartTopic = getValue("EVENT_MQTT_START_TOPIC");
+		eventMQTTqos = asNonNegativeInteger("EVENT_MQTT_QOS");
+		eventMQTTbroker = getValue("EVENT_MQTT_BROKER");
+		
 		checkCoturnIp();
 
 		coturnRedisIp = asOptionalInetAddress("COTURN_REDIS_IP");
@@ -956,6 +968,22 @@ public class OpenviduConfig {
 			log.warn("DOTENV_PATH configuration property is not defined");
 		}
 		return null;
+	}
+
+	public String getEventMQTTbroker() {
+		return eventMQTTbroker;
+	}
+
+	public Integer getEventMQTTqos() {
+		return eventMQTTqos;
+	}
+
+	public String getEventMQTTstartTopic() {
+		return eventMQTTstartTopic;
+	}
+
+	public boolean isEventMQTTlog() {
+		return eventMQTTlog;
 	}
 
 }

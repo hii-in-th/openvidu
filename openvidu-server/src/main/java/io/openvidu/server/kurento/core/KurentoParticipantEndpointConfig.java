@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.openvidu.server.cdr.CallDetailRecord;
+import io.openvidu.server.cdr.mqtt.MQTTRecord;
 import io.openvidu.server.config.InfoHandler;
 import io.openvidu.server.kurento.endpoint.KmsEvent;
 import io.openvidu.server.kurento.endpoint.KmsMediaEvent;
@@ -40,6 +41,9 @@ public class KurentoParticipantEndpointConfig {
 
 	@Autowired
 	protected CallDetailRecord CDR;
+	
+	@Autowired
+	protected MQTTRecord mqttR;
 
 	public void addEndpointListeners(MediaEndpoint endpoint, String typeOfEndpoint) {
 
@@ -196,6 +200,7 @@ public class KurentoParticipantEndpointConfig {
 					event.getMediaType(), endpoint.createdAt());
 			endpoint.kmsEvents.add(kmsEvent);
 			this.CDR.log(kmsEvent);
+			this.mqttR.log(kmsEvent);
 			this.infoHandler.sendInfo(msg);
 			log.info(msg);
 		});

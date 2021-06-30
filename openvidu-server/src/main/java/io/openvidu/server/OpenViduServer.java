@@ -46,6 +46,7 @@ import org.springframework.context.event.EventListener;
 import io.openvidu.server.cdr.CDRLogger;
 import io.openvidu.server.cdr.CDRLoggerFile;
 import io.openvidu.server.cdr.CallDetailRecord;
+import io.openvidu.server.cdr.mqtt.MQTTRecord;
 import io.openvidu.server.config.HttpHandshakeInterceptor;
 import io.openvidu.server.config.OpenviduConfig;
 import io.openvidu.server.config.OpenviduConfig.Error;
@@ -182,6 +183,13 @@ public class OpenViduServer implements JsonRpcConfigurer {
 	@ConditionalOnMissingBean
 	public RpcNotificationService notificationService() {
 		return new RpcNotificationService();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	@DependsOn("openviduConfig")
+	public MQTTRecord mqttRecord(OpenviduConfig openviduConfig) {
+		return new MQTTRecord(openviduConfig);
 	}
 
 	@Bean
