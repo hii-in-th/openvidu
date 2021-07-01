@@ -195,6 +195,8 @@ public class OpenviduConfig {
 
 	private boolean isTurnadminAvailable = false;
 
+	private Integer eventMQTTMaxInflight;
+
 	// Plain config properties getters
 
 	public String getCoturnDatabaseDbname() {
@@ -523,6 +525,7 @@ public class OpenviduConfig {
 		eventMQTTstartTopic = getValue("EVENT_MQTT_START_TOPIC");
 		eventMQTTqos = asNonNegativeInteger("EVENT_MQTT_QOS");
 		eventMQTTbroker = getValue("EVENT_MQTT_BROKER");
+		eventMQTTMaxInflight = asNonNegativeInteger("EVENT_MQTT_MAX_IN_FLIGHT");
 		
 		checkCoturnIp();
 
@@ -984,6 +987,10 @@ public class OpenviduConfig {
 
 	public boolean isEventMQTTlog() {
 		return eventMQTTlog;
+	}
+
+	public Integer getEventMQTTMaxInflight() {
+		return eventMQTTMaxInflight;
 	}
 
 }

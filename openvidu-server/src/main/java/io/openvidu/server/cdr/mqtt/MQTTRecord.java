@@ -28,6 +28,7 @@ public class MQTTRecord implements MQTTLogger {
 	private Integer qos;
 	private String broker;
 	private String domainName;
+	private int maxInflight;
 	MqttClient sampleClient;
 
 	public MQTTRecord(OpenviduConfig openviduConfig) {
@@ -44,6 +45,7 @@ public class MQTTRecord implements MQTTLogger {
 		qos = openviduConfig.getEventMQTTqos();
 		broker = openviduConfig.getEventMQTTbroker();
 		domainName = openviduConfig.getDomainOrPublicIp();
+		maxInflight = openviduConfig.getEventMQTTMaxInflight();
 		if (eventMQTTlog)
 			try {
 				sampleClient = getMQTTconnect();
@@ -60,6 +62,7 @@ public class MQTTRecord implements MQTTLogger {
 		MqttConnectOptions connOpts = new MqttConnectOptions();
 		connOpts.setAutomaticReconnect(true);
 		connOpts.setCleanSession(false);
+		connOpts.setMaxInflight(maxInflight);
 		sampleClient.connect(connOpts);
 		return sampleClient;
 	}
@@ -71,7 +74,7 @@ public class MQTTRecord implements MQTTLogger {
 	}
 
 	@Override
-	public void log(KmsEvent event) {
+	public void log(KmsEvent event, String topic) {
 		if (isSendLog()) {
 			try {
 				JsonObject jsonObject = event.toJson();
@@ -79,18 +82,17 @@ public class MQTTRecord implements MQTTLogger {
 				String content = jsonObject.toString();
 				MqttMessage message = new MqttMessage(content.getBytes());
 				message.setQos(qos);
-				if(message == null) 
+				if (message == null)
 					log.warn("Message mqtt is null");
-				if(topic == null)
+				if (topic == null)
 					log.warn("Topic mqtt is null");
-				sampleClient.publish(topic, message);
+				sampleClient.publish(this.topic + "/" + topic, message);
 			} catch (MqttException e) {
 				log.warn("Cannot send message mqtt " + e.getMessage(), e);
-			}catch(NullPointerException e) {
-				log.warn("Mqtt null pointer" + e.getMessage(),e);
+			} catch (NullPointerException e) {
+				log.warn("Mqtt null pointer" + e.getMessage(), e);
 			}
 		}
-
 	}
 
 	@Override

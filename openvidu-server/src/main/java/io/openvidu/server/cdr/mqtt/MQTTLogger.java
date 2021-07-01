@@ -7,7 +7,7 @@ import io.openvidu.server.summary.SessionSummary;
 public interface MQTTLogger {
 	public void log(CDREvent event);
 
-	public void log(KmsEvent event);
+	public void log(KmsEvent event, String topic);
 
 	public void log(SessionSummary sessionSummary);
 }

@@ -41,7 +41,7 @@ public class KurentoParticipantEndpointConfig {
 
 	@Autowired
 	protected CallDetailRecord CDR;
-	
+
 	@Autowired
 	protected MQTTRecord mqttR;
 
@@ -61,6 +61,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "IceGatheringDone");
 			});
 
 			finalEndpoint.addNewCandidatePairSelectedListener(event -> {
@@ -75,6 +76,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "NewCandidatePairSelected");
 			});
 
 			finalEndpoint.addIceComponentStateChangeListener(event -> {
@@ -88,6 +90,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "IceComponentStateChange");
 			});
 
 			finalEndpoint.addDataChannelOpenListener(event -> {
@@ -100,6 +103,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "DataChannelOpenEvent");
 			});
 
 			finalEndpoint.addDataChannelCloseListener(event -> {
@@ -112,6 +116,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "DataChannelCloseEvent");
 			});
 
 		}
@@ -130,6 +135,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "EndOfStreamEvent");
 			});
 
 			finalEndpoint.addUriEndpointStateChangedListener(event -> {
@@ -142,6 +148,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "UriEndpointStateChangedEvent");
 			});
 
 		}
@@ -161,6 +168,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "ConnectionStateChanged");
 			});
 
 			finalEndpoint.addMediaStateChangedListener(event -> {
@@ -173,6 +181,7 @@ public class KurentoParticipantEndpointConfig {
 				this.CDR.log(kmsEvent);
 				this.infoHandler.sendInfo(msg);
 				log.info(msg);
+				this.mqttR.log(kmsEvent, "MediaStateChangedEvent");
 			});
 
 		}
@@ -190,6 +199,7 @@ public class KurentoParticipantEndpointConfig {
 			this.CDR.log(kmsEvent);
 			this.infoHandler.sendInfo(msg);
 			log.info(msg);
+			this.mqttR.log(kmsEvent, "MediaFlowInStateChange");
 		});
 
 		finalEndpoint.addMediaFlowOutStateChangeListener(event -> {
@@ -200,9 +210,9 @@ public class KurentoParticipantEndpointConfig {
 					event.getMediaType(), endpoint.createdAt());
 			endpoint.kmsEvents.add(kmsEvent);
 			this.CDR.log(kmsEvent);
-			this.mqttR.log(kmsEvent);
 			this.infoHandler.sendInfo(msg);
 			log.info(msg);
+			this.mqttR.log(kmsEvent, "MediaFlowOutStateChange");
 		});
 
 		finalEndpoint.addErrorListener(event -> {
@@ -215,6 +225,7 @@ public class KurentoParticipantEndpointConfig {
 			this.CDR.log(kmsEvent);
 			this.infoHandler.sendInfo(msg);
 			log.error(msg);
+			this.mqttR.log(kmsEvent, "ERROR");
 		});
 
 		finalEndpoint.addMediaTranscodingStateChangeListener(event -> {
@@ -227,6 +238,7 @@ public class KurentoParticipantEndpointConfig {
 			this.CDR.log(kmsEvent);
 			this.infoHandler.sendInfo(msg);
 			log.info(msg);
+			this.mqttR.log(kmsEvent, "MediaTranscodingStateChange");
 		});
 	}
 
